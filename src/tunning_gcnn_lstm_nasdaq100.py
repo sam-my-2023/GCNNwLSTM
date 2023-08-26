@@ -50,7 +50,7 @@ def graph_builder(news_embedding,company_embedding,k = 3, num_news=10):
     for x in news_stock_siminarity:
         node_set = np.argpartition(x,len(x)-k)[len(x)-k:]
         for h in range(k):
-            i = node_set(h)
+            i = node_set[h]
             for j in node_set[h:]:
                 if A[i,j]:
                     continue
@@ -370,7 +370,7 @@ def tunning(l=60,r=1):
 
 
     adj_per_day=np.stack(graph_time_series.news_ticker_our_formats(TICKERS,graph_builder),axis=0)
-    print(adj_per_day.shape)
+    
 
     n = len(adj_per_day)
 
@@ -379,7 +379,7 @@ def tunning(l=60,r=1):
     
     sep_point = int(2*n/3)
     
-    n_test = min(price.shape[0]-sep_point, stock_feature.shape[0]-n_test,n_test)
+    n_test = n - sep_point
 
     batch_size = 16
     mask_size = 5
@@ -484,5 +484,5 @@ def tunning(l=60,r=1):
     torch.save(best_nn_parameters.state_dict(), 'nn_weights'+study_name )
     
 if __name__ == "__main__":
-    PROJECT_PATH = os.path.abspath('....')
+    PROJECT_PATH = '/home/sam/mingsong/ChatgptGraph'
     tunning()
